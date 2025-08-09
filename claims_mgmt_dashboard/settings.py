@@ -19,9 +19,8 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
-# SECURITY WARNING: keep the secret key used in production secret!
-with open("/etc/secret_key.txt") as f:
-    SECRET_KEY = f.read().strip()
+# This is just a test app, use generated secret key.
+SECRET_KEY = "django-insecure-vg@$x(fx_g1dv8=%_8(_20#uplu6%4)b%=2^jm8x7&!4iz0_cu"
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
@@ -129,5 +128,4 @@ STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-import os
 STATIC_ROOT = os.path.join(BASE_DIR, 'static/')

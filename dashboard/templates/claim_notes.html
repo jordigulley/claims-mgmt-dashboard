@@ -1,0 +1,12 @@
+{% load humanize %}
+<ul class="list border">
+    {% for note in claim_notes %}
+        <li>
+            {{ note.content }}
+            <span class="right secondary-text">{{ note.created_at|naturaltime }}</span>
+            {% if note.is_review_flag %}<i class="error-text">flag</i>{% endif %}
+        </li>
+    {% empty %}
+        <li>Empty</li>
+    {% endfor %}
+</ul>

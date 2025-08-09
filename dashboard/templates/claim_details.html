@@ -1,0 +1,84 @@
+{% load humanize %}
+{% if claim_details %}
+    <div class="claim_details_content">
+        <div class="bottom-margin">
+            <div class="row">
+                <h4>Claim Details</h4>
+                <button class="transparent circle close_button"
+                        popovertarget="claim_details"
+                        popovertargetaction="hide">
+                    <i>close</i>
+                </button>
+            </div>
+            <div class="row">
+                <code>CLAIM #{{ claim_details.claim.id }}</code>
+                <div class="u-pull-right">{% include "claim_status_chip.html" with status=claim_details.claim.status %}</div>
+            </div>
+            <h6>{{ claim_details.claim.patient_name }}</h6>
+            <div class="row">
+                <p>
+                    <b>Billed Amount</b>
+                    <br>
+                    ${{ claim_details.claim.billed_amount|intcomma }}
+                </p>
+                <p>
+                    <b>Paid Amount</b>
+                    <br>
+                    ${{ claim_details.claim.paid_amount|intcomma }}
+                </p>
+            </div>
+            <p>
+                <b>Discharge Date</b> {{ claim_details.claim.discharge_date }}
+            </p>
+            <p>
+                <b>CPT Codes</b>
+            </p>
+            {% for code in claim_details.split_cpt_codes %}<button class="chip round">{{ code }}</button>{% endfor %}
+            {% if claim_details.claim.status == "Denied" %}
+                <p>
+                    <b>Denial Reason</b>
+                </p>
+                <p class="error-text">{{ claim_details.denial_reason }}</p>
+            {% endif %}
+        </div>
+        <h4>Notes</h4>
+        <div id="claim_notes">{% include "claim_notes.html" %}</div>
+    </div>
+    <div x-data="{note_message: '', editing_note_message: false, current_note_type: 'Note'}"
+         class="side_sheet_bottom_actions"
+         x-bind:class="{'expand_for_note_message_field': editing_note_message}">
+        <!--On submit return false prevents page reload.-->
+        <form>
+            {% csrf_token %}
+            <div x-show="!editing_note_message">
+                <button class="error"
+                        type="button"
+                        @click="editing_note_message = !editing_note_message; current_note_type = 'Flag'">
+                    Flag for Review
+                </button>
+                <button type="button"
+                        @click="editing_note_message = !editing_note_message; current_note_type = 'Note'">
+                    Add Note
+                </button>
+            </div>
+            <div x-show="editing_note_message" class="row">
+                <div class="field border label max">
+                    <input x-model="note_message">
+                    <label>
+                        Edit <span x-text="current_note_type"></span> Message
+                    </label>
+                </div>
+                <button type="submit"
+                        x-bind:hx-vals="JSON.stringify({'claim': {{ claim_details.claim.id }}, 'note_message':  note_message, 'is_review_flag': current_note_type == 'Flag'})"
+                        hx-post="/add_note"
+                        hx-target="#claim_list_item_{{ claim_details.claim.id }}"
+                        hx-swap="innerHTML"
+                        hx-trigger="click"
+                        @click="$nextTick(()=> { note_message = ''; editing_note_message = false;} )">
+                    <!--$nextTick delays clearing of note_message until after POST request is sent-->
+                    Add <span x-text="current_note_type" />
+                </button>
+            </form>
+        </div>
+    </div>
+{% endif %}

@@ -1,0 +1,91 @@
+<form>
+    {% csrf_token %}
+    <div class="row">
+        <h4>Claims</h4>
+        <nav class="group connected status_filter_buttons">
+            <h7>
+            <i>filter_list</i>
+            </h7>
+            <button class="left-round surface-high {% if status_filter == "Paid" %}primary{% endif %}"
+                    hx-trigger="click"
+                    hx-post="/get_claims_table_page"
+                    hx-target="#claims_table"
+                    hx-swap="innerHTML"
+                    hx-vals='{"page": {{ current_page|add:"-1" }}, "search": "{{ current_search }}", "status_filter": "Paid"}'>
+                Paid
+            </button>
+            <button class="no-round surface-high {% if status_filter == "Under Review" %}tertiary{% endif %}"
+                    hx-trigger="click"
+                    hx-post="/get_claims_table_page"
+                    hx-target="#claims_table"
+                    hx-swap="innerHTML"
+                    hx-vals='{"page": {{ current_page|add:"-1" }}, "search": "{{ current_search }}", "status_filter": "Under Review"}'>
+                Under Review
+            </button>
+            <button class="right-round surface-high {% if status_filter == "Denied" %}error{% endif %}"
+                    hx-trigger="click"
+                    hx-post="/get_claims_table_page"
+                    hx-target="#claims_table"
+                    hx-swap="innerHTML"
+                    hx-vals='{"page": {{ current_page|add:"1" }}, "search": "{{ current_search }}", "status_filter": "Denied"}'>
+                Denied
+            </button>
+            {% if status_filter != None %}
+                <button class="transparent circle"
+                        hx-trigger="click"
+                        hx-post="/get_claims_table_page"
+                        hx-target="#claims_table"
+                        hx-swap="innerHTML"
+                        hx-vals='{"page": {{ current_page|add:"1" }}, "search": "{{ current_search }}"}'>
+                    <i>close</i>
+                </button>
+            {% endif %}
+        </nav>
+    </div>
+</form>
+<div class="scroll surface">
+    <table>
+        <thead>
+            <tr>
+                <th>Claim ID</th>
+                <th>Patient</th>
+                <th>Billed</th>
+                <th>Paid</th>
+                <th>Status</th>
+                <th>Insurer</th>
+                <th>Discharge Date</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody id="claims_table_body">
+            {% for claim in claims %}
+                <tr id="claim_list_item_{{ claim.id }}">{% include "claim_item.html" %}</tr>
+            {% empty %}
+                <tr>
+                    <td>No claims yet.</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <form>
+      {% csrf_token %}
+      <nav class="group connected">
+          <button class="left-round"
+                  hx-trigger="click"
+                  hx-post="/get_claims_table_page"
+                  hx-target="#claims_table"
+                  hx-swap="innerHTML"
+                  hx-vals='{"page": {{ current_page|add:"-1" }}, "search": "{{ current_search }}", "status_filter": "{{ status_filter }}" }'>
+              <i>arrow_back</i>Previous Page
+          </button>
+          <button class="right-round"
+                  hx-trigger="click"
+                  hx-post="/get_claims_table_page"
+                  hx-target="#claims_table"
+                  hx-swap="innerHTML"
+                  hx-vals='{"page": {{ current_page|add:"1" }}, "search": "{{ current_search }}", "status_filter": "{{ status_filter }}" }'>
+              Next Page <i>arrow_forward</i>
+          </button>
+      </nav>
+    </form>
+</div>

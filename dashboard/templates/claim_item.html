@@ -1,0 +1,19 @@
+<td>{{ claim.id }}</td>
+<td>{{ claim.patient_name }}</td>
+<td>{{ claim.billed_amount }}</td>
+<td>{{ claim.paid_amount }}</td>
+<td>{% include "claim_status_chip.html" with status=claim.status %}</td>
+<td>{{ claim.insurer_name }}</td>
+<td>{{ claim.discharge_date }}</td>
+<td>
+    <button popovertarget="claim_details"
+            hx-get="/claim_details"
+            hx-vals='{"claim_details": {{ claim.id }} }'
+            hx-trigger="click"
+            hx-target="#claim_details"
+            hx-swap="innerHTML">View</button>
+    {% if claim.has_flag %}<span><i class="error-text">flag</i></span>{% endif %}
+</td>
+{% if update_claim_notes %}
+    <div id="claim_notes" hx-swap-oob="innerHTML">{% include "claim_notes.html" %}</div>
+{% endif %}

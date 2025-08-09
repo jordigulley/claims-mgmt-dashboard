@@ -1,0 +1,3 @@
+<button class=" chip round {% if status == "Paid" %} primary {% elif status == "Under Review" %} tertiary {% elif status == "Denied" %} error {% endif %} ">
+    {{ status }}
+</button>

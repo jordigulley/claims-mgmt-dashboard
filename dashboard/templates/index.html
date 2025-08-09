@@ -1,0 +1,41 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta http-equiv="x-ua-compatible" content="ie=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <title>Claims Management Dashboard</title>
+        <meta name="description"
+              content="Django, HTMX + AlpineJS, SQLite Dashboard Example" />
+        <link rel="stylesheet"  href="{% static 'dashboard/dashboard.css' %}" />
+        <link rel="stylesheet"
+              href="https://cdn.jsdelivr.net/npm/beercss@3.11.33/dist/cdn/beer.min.css" />
+        <script defer
+                src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    </head>
+    <body class="light">
+        <main class="responsive">
+            <h1>Claims Management Dashboard</h1>
+            <form>
+                {% csrf_token %}
+                <div class="field border label">
+                    <input type="search"
+                           name="search"
+                           hx-post="/get_claims_table_page"
+                           hx-trigger="input changed delay:500ms, keyup[key=='Enter']"
+                           hx-target="#claims_table"
+                           hx-indicator="#search_loader">
+                    <label>Search Patient, Insurer, or Claim ID</label>
+                </div>
+            </form>
+            <div id="claims_table">{% include "claims_table.html" %}</div>
+        </main>
+        <div class="claim_details_panel small-elevate" popover id="claim_details">{% include "claim_details.html" %}</div>
+        <script src="https://cdn.jsdelivr.net/npm/htmx.org@2.0.6/dist/htmx.min.js"></script>
+        <script type="module"
+                src="https://cdn.jsdelivr.net/npm/beercss@3.11.33/dist/cdn/beer.min.js"></script>
+        <script type="module"
+                src="https://cdn.jsdelivr.net/npm/material-dynamic-colors@1.1.2/dist/cdn/material-dynamic-colors.min.js"></script>
+    </body>
+</html>

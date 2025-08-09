@@ -1,0 +1,75 @@
+.side_sheet_bottom_actions {
+    margin-top: auto;
+    height: 72px;
+    border-top: 1px solid var(--outline-variant);
+    border-radius: 0;
+    width: 400px;
+    max-width: 400px;
+    overflow: hidden;
+    padding-top: 16px;
+    padding-bottom: 24px;
+    display: flex;
+    flex-direction: row;
+    padding-left: 12px;
+    background: var(--surface);
+    transition: all 0.4s;
+}
+.expand_for_note_message_field {
+    height: auto;
+    padding-bottom: 48px;
+    transition: all 0.4s;
+}
+.chip {
+    pointer-events: none;
+}
+.claim_details_row {
+    /* position: fixed; */
+    /* display: flex;
+    flex-direction: row;
+    justify-content: center;
+    width: 100%; */
+    bottom: 0;
+}
+.claim_details_panel {
+    background: var(--surface);
+    color: var(--on-surface-variant);
+    border-radius: 28px;
+    /* margin: 16px; */
+    max-width: 400px;
+    width: 400px;
+    /* padding: 24px; */
+    padding-top: 16px;
+    overflow-x: hidden;
+    overflow-y: scroll;
+    height: 90vh;
+    max-height: 90vh;
+}
+.claim_details_panel:popover-open {
+    position: fixed;
+    inset: unset;
+    right: 16px;
+    top: 16px;
+    bottom: 16px;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+.claim_details_panel::backdrop {
+    background-color: var(--scrim);
+    opacity: 0.32;
+}
+.claim_details_content {
+    padding-left: 24px;
+    padding-right: 24px;
+}
+.close_button {
+    display: inline;
+    right: 0;
+    position: absolute;
+}
+.content {
+    margin: 40px;
+}
+.status_filter_buttons {
+    margin-left: auto !important;
+}
